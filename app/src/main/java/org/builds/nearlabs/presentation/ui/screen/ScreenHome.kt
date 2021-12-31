@@ -33,7 +33,8 @@ import org.builds.nearlabs.presentation.ui.screen.components.AssetItem
 import org.builds.nearlabs.presentation.ui.screen.components.TransactionItem
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
 import org.builds.nearlabs.presentation.ui.theme.Blue
-import org.builds.nearlabs.presentation.ui.theme.Gray2
+import org.builds.nearlabs.presentation.ui.theme.Gray1
+import org.builds.nearlabs.presentation.ui.theme.Gray4
 import org.builds.nearlabs.presentation.viewmodel.AssetViewModel
 import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
 
@@ -122,7 +123,7 @@ private fun Banner() {
             .fillMaxWidth()
             .height(180.dp),
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(0.5.dp, Gray2),
+        border = BorderStroke(0.5.dp, Gray4),
     ) {
         ConstraintLayout {
             val (image, title, button) = createRefs()

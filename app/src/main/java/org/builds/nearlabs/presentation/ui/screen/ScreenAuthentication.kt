@@ -1,29 +1,64 @@
 package org.builds.nearlabs.presentation.ui.screen
 
+import android.content.Intent
+import android.net.Uri
+import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import org.builds.nearlabs.R
+import org.builds.nearlabs.presentation.ui.component.AuthMode
+import org.builds.nearlabs.presentation.ui.event.NavEvent
+import org.builds.nearlabs.presentation.ui.event.initEventHandler
+import org.builds.nearlabs.presentation.ui.navigation.NavTarget
+import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.ui.theme.Yellow
 
 @Composable
 fun ScreenAuthentication() {
+    val eventHandler = initEventHandler()
+    ScreenAuthentication(
+        onGetStarted = {
+            eventHandler.postNavEvent(NavEvent.Action(NavTarget.Home))
+        }, onLogin = {
+            eventHandler.postNavEvent(NavEvent.Action(NavTarget.Home))
+        }
+    )
+}
+
+@Composable
+private fun ScreenAuthentication(
+    onGetStarted: () -> Unit,
+    onLogin: () -> Unit
+) {
     ConstraintLayout(Modifier.fillMaxSize()) {
-        val (background, logo) = createRefs()
+        val (backgroundId, logoId, content) = createRefs()
 
         Image(
             modifier = Modifier
-                .constrainAs(background) {
+                .constrainAs(backgroundId) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -36,8 +71,8 @@ fun ScreenAuthentication() {
         )
         Image(
             modifier = Modifier
-                .constrainAs(logo) {
-                    bottom.linkTo(background.bottom)
+                .constrainAs(logoId) {
+                    bottom.linkTo(backgroundId.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
@@ -47,11 +82,162 @@ fun ScreenAuthentication() {
                 id = R.string.logo
             )
         )
+        Column(
+            modifier = Modifier
+                .constrainAs(content) {
+                    top.linkTo(backgroundId.bottom)
+                    bottom.linkTo(parent.bottom)
+                    height = Dimension.fillToConstraints
+                }
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            EmailAndPhone(onGetStarted)
+            NearAccount(onLogin)
+        }
+    }
+}
+
+
+@Composable
+private fun EmailAndPhone(onGetStarted: () -> Unit) {
+    var mode by remember { mutableStateOf(AuthMode.Email) }
+    var input by remember { mutableStateOf("") }
+
+    Row {
+        TextButton(
+            onClick = {
+                mode = AuthMode.Email
+                input = ""
+            },
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = AuthMode.Email.getSelectionColor(mode)
+            )
+        ) {
+            Text(text = stringResource(R.string.email))
+        }
+        Spacer(
+            modifier = Modifier
+                .width(24.dp)
+                .wrapContentHeight()
+        )
+        TextButton(
+            onClick = {
+                mode = AuthMode.Phone
+                input = ""
+            },
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = AuthMode.Phone.getSelectionColor(mode)
+            )
+        ) {
+            Text(text = stringResource(R.string.phone))
+        }
+    }
+
+
+    OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions(keyboardType = mode.getKeyboardType()),
+        value = input,
+        label = {
+            Text(text = stringResource(mode.getLabel()))
+        },
+        onValueChange = { input = it })
+
+    Button(
+        modifier = Modifier.padding(top = 16.dp),
+        onClick = onGetStarted,
+        enabled = if (mode.isEmail()) Patterns.EMAIL_ADDRESS.matcher(input)
+            .matches() else input.isNotEmpty()
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = stringResource(R.string.get_started))
+            Icon(Icons.Default.KeyboardArrowRight, "")
+        }
     }
 }
 
 @Composable
+private fun NearAccount(onLogin: () -> Unit) {
+    var account by remember { mutableStateOf("") }
+    Divider(
+        Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp)
+            .height(1.dp)
+    )
+
+    Text(
+        modifier = Modifier.padding(top = 24.dp),
+        text = stringResource(R.string.already_have_near_account)
+    )
+    OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        value = account,
+        label = {
+            Text(text = stringResource(R.string.wallet_name_near))
+        },
+        onValueChange = { account = it })
+    Button(
+        modifier = Modifier.padding(top = 16.dp),
+        onClick = onLogin,
+        enabled = account.isNotEmpty()
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = stringResource(R.string.login))
+            Icon(Icons.Default.KeyboardArrowRight, "")
+        }
+    }
+    val tcAndPrivacy = buildAnnotatedString {
+        append("by clicking continue you must agree to near labs\n")
+        pushStringAnnotation(
+            tag = "TcUrl",
+            annotation = "https://en.wikipedia.org/wiki/Terms_of_service"
+        )
+        withStyle(style = SpanStyle(color = Blue)) {
+            append(stringResource(R.string.term_and_conditions))
+        }
+        append(" and ")
+        pushStringAnnotation(
+            tag = "PrivacyUrl",
+            annotation = "https://en.wikipedia.org/wiki/Privacy"
+        )
+        withStyle(style = SpanStyle(color = Blue)) {
+            append(stringResource(R.string.privacy_policy))
+        }
+    }
+    val context = LocalContext.current
+
+    ClickableText(modifier = Modifier
+        .padding(top = 16.dp),
+        text = tcAndPrivacy,
+        style = TextStyle.Default.copy(textAlign = TextAlign.Center),
+        onClick = { offset ->
+            var selectedLink = ""
+            tcAndPrivacy.getStringAnnotations(
+                tag = "TcUrl", start = offset,
+                end = offset
+            ).firstOrNull()?.let {
+                selectedLink = it.item
+            }
+            tcAndPrivacy.getStringAnnotations(
+                tag = "PrivacyUrl",
+                start = offset,
+                end = offset
+            ).firstOrNull()?.let { selectedLink = it.item }
+
+            if (selectedLink.isNotEmpty()) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(selectedLink))
+                context.startActivity(intent)
+            }
+        }
+    )
+}
+
+
+@Composable
 @Preview
 private fun ScreenAuthenticationPreview() {
-    ScreenAuthentication()
+    ScreenAuthentication({}, {})
 }
