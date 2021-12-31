@@ -22,11 +22,13 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.navigationBarsPadding
+import dagger.hilt.android.AndroidEntryPoint
 import org.builds.nearlabs.presentation.ui.component.BottomTabItem
 import org.builds.nearlabs.presentation.ui.navigation.AppGraph
 import org.builds.nearlabs.presentation.ui.theme.AppTheme
 import org.builds.nearlabs.presentation.ui.theme.Blue
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

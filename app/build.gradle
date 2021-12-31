@@ -64,6 +64,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
+    implementation "com.jakewharton.threetenabp:threetenabp:$dateTime"
+
     implementation "io.coil-kt:coil-compose:$coilVersion"
     implementation "com.google.accompanist:accompanist-insets:$accompanistInsetsVersion"
 }
