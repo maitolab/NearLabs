@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import org.builds.nearlabs.R
 import org.builds.nearlabs.common.ResultWrapper
 import org.builds.nearlabs.domain.model.transaction.Transaction
@@ -22,9 +21,8 @@ import org.builds.nearlabs.presentation.ui.component.TransactionItem
 import org.builds.nearlabs.presentation.ui.event.NavEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.navigation.NavTarget
-import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
+import org.builds.nearlabs.presentation.ui.component.UserInfo
 import org.builds.nearlabs.presentation.ui.theme.Blue
-import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
 import org.builds.nearlabs.presentation.viewmodel.initTransactionViewModel
 
 @Composable

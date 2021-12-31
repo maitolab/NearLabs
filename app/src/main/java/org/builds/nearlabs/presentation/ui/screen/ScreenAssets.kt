@@ -17,7 +17,7 @@ import org.builds.nearlabs.presentation.ui.component.AssetItem
 import org.builds.nearlabs.presentation.ui.event.NavEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.navigation.NavTarget
-import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
+import org.builds.nearlabs.presentation.ui.component.UserInfo
 import org.builds.nearlabs.presentation.viewmodel.initAssetViewModel
 
 @Composable

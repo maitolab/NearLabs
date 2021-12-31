@@ -8,10 +8,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,13 +20,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import org.builds.nearlabs.R
 import org.builds.nearlabs.domain.DataPool
 import org.builds.nearlabs.domain.model.Contact
+import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
+import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.ui.theme.Gray2
 import org.builds.nearlabs.presentation.ui.theme.Gray3
@@ -37,13 +36,14 @@ import org.builds.nearlabs.presentation.ui.theme.Gray4
 @Composable
 fun BottomSheetGift(sendGift: () -> Unit) {
     val searchText = remember { mutableStateOf(TextFieldValue()) }
+    val eventHandler = initEventHandler()
 
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BottomSheetHeader(title = stringResource(id = R.string.gift_an_nft)) {
-
+            eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
         }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -99,7 +99,11 @@ fun BottomSheetGift(sendGift: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = stringResource(id = R.string.send_gift), color = Color.White)
-                Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription = "", tint = Color.White)
+                Icon(
+                    imageVector = Icons.Rounded.KeyboardArrowRight,
+                    contentDescription = "",
+                    tint = Color.White
+                )
             }
         }
 
@@ -111,7 +115,11 @@ fun BottomSheetGift(sendGift: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = stringResource(id = R.string.share_app), color = Blue)
-                Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_share), contentDescription = "", tint = Blue)
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
+                    contentDescription = "",
+                    tint = Blue
+                )
             }
         }
     }

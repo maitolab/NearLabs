@@ -40,6 +40,8 @@ fun BottomSheetVerifyUser(event: BottomSheetEvent.VerifyUser) {
             eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
         }, onResend = {
             eventHandler.postSnackBarEvent(SnackBarEvent.Info(resendMessage))
+        }, onClose = {
+            eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
         })
 }
 
@@ -49,6 +51,7 @@ private fun BottomSheetVerifyUser(
     onContinue: () -> Unit,
     onSendDifferentUser: () -> Unit,
     onResend: () -> Unit,
+    onClose: () -> Unit,
 ) {
     Column(
         Modifier
@@ -56,31 +59,8 @@ private fun BottomSheetVerifyUser(
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ConstraintLayout(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            val (text, button) = createRefs()
-            Text(
-                modifier = Modifier
-                    .constrainAs(text) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .fillMaxWidth(),
-                text = stringResource(R.string.verification),
-                textAlign = TextAlign.Center,
-                fontSize = 22.sp
-            )
-            IconButton(
-                modifier = Modifier.constrainAs(button) {
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                },
-                onClick = onContinue
-            ) {
-                Icon(Icons.Default.Close, contentDescription = null, tint = Gray1)
-            }
+        BottomSheetHeader(title = stringResource(id = R.string.verification)) {
+            onClose.invoke()
         }
 
         LinearProgressIndicator(
@@ -151,5 +131,11 @@ private fun BottomSheetVerifyUser(
 @Composable
 @Preview
 private fun BottomSheetVerifyUserPreview() {
-    BottomSheetVerifyUser(BottomSheetEvent.VerifyUser(AuthMode.Email, "test@gmail.com"), {}, {}, {})
+    BottomSheetVerifyUser(
+        BottomSheetEvent.VerifyUser(AuthMode.Email, "test@gmail.com"),
+        {},
+        {},
+        {},
+        {}
+    )
 }

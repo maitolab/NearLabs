@@ -33,6 +33,7 @@
     <string name="phone_label">Ex. (373) 378 8383</string>
     <string name="get_started">Get Started</string>
     <string name="already_have_near_account">Already have Near Account</string>
+    <string name="already_have_near_account_">Already have Near Account?</string>
     <string name="wallet_name_near">walletName.near</string>
     <string name="login">Login</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -44,4 +45,10 @@
     <string name="did_receive_your_code">Didn\'t receive your code?</string>
     <string name="resend_your_code">Resend your code</string>
     <string name="send_to_a_different">Send to a different %s</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="login_with_near">Login with NEAR</string>
+    <string name="create_account_instruction">Enter an Account ID to use with your NEAR account. Your Account ID will be used for all NEAR operations, including sending and receiving assets.</string>
+    <string name="create_near_accoutn">Create Near Account</string>
+    <string name="full_name">Full Name</string>
+    <string name="account_id">Account Id</string>
 </resources>

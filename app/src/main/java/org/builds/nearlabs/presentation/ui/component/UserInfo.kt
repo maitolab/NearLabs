@@ -1,4 +1,4 @@
-package org.builds.nearlabs.presentation.ui.screen.components
+package org.builds.nearlabs.presentation.ui.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*

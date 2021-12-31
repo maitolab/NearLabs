@@ -23,6 +23,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -109,13 +110,13 @@ private fun ScreenAuthentication(
 @Composable
 private fun EmailAndPhone(onGetStarted: (AuthMode, String) -> Unit) {
     var mode by remember { mutableStateOf(AuthMode.Email) }
-    var input by remember { mutableStateOf("") }
+    var input by remember { mutableStateOf(TextFieldValue()) }
 
     Row {
         TextButton(
             onClick = {
                 mode = AuthMode.Email
-                input = ""
+                input = TextFieldValue()
             },
             colors = ButtonDefaults.textButtonColors(
                 contentColor = AuthMode.Email.getSelectionColor(mode)
@@ -131,7 +132,7 @@ private fun EmailAndPhone(onGetStarted: (AuthMode, String) -> Unit) {
         TextButton(
             onClick = {
                 mode = AuthMode.Phone
-                input = ""
+                input = TextFieldValue()
             },
             colors = ButtonDefaults.textButtonColors(
                 contentColor = AuthMode.Phone.getSelectionColor(mode)
@@ -153,10 +154,10 @@ private fun EmailAndPhone(onGetStarted: (AuthMode, String) -> Unit) {
     Button(
         modifier = Modifier.padding(top = 16.dp),
         onClick = {
-            onGetStarted.invoke(mode, input)
+            onGetStarted.invoke(mode, input.text)
         },
-        enabled = if (mode.isEmail()) Patterns.EMAIL_ADDRESS.matcher(input)
-            .matches() else input.isNotEmpty()
+        enabled = if (mode.isEmail()) Patterns.EMAIL_ADDRESS.matcher(input.text)
+            .matches() else input.text.isNotEmpty()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = stringResource(R.string.get_started))
@@ -167,7 +168,7 @@ private fun EmailAndPhone(onGetStarted: (AuthMode, String) -> Unit) {
 
 @Composable
 private fun NearAccount(onLogin: () -> Unit) {
-    var account by remember { mutableStateOf("") }
+    var account by remember { mutableStateOf(TextFieldValue()) }
     Divider(
         Modifier
             .fillMaxWidth()
@@ -189,7 +190,7 @@ private fun NearAccount(onLogin: () -> Unit) {
     Button(
         modifier = Modifier.padding(top = 16.dp),
         onClick = onLogin,
-        enabled = account.isNotEmpty()
+        enabled = account.text.isNotEmpty()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = stringResource(R.string.login))
