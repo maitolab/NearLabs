@@ -19,6 +19,9 @@ import org.builds.nearlabs.common.ResultWrapper
 import org.builds.nearlabs.domain.model.transaction.Transaction
 import org.builds.nearlabs.presentation.ui.component.Header
 import org.builds.nearlabs.presentation.ui.component.TransactionItem
+import org.builds.nearlabs.presentation.ui.event.NavEvent
+import org.builds.nearlabs.presentation.ui.event.initEventHandler
+import org.builds.nearlabs.presentation.ui.navigation.NavTarget
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
@@ -26,6 +29,7 @@ import org.builds.nearlabs.presentation.viewmodel.initTransactionViewModel
 
 @Composable
 fun ScreenTransactions() {
+    val eventHandler = initEventHandler()
     val transactionViewModel = initTransactionViewModel()
 
     val transactions: MutableState<ResultWrapper<List<Transaction>>> = remember {
@@ -51,8 +55,8 @@ fun ScreenTransactions() {
                 Header(
                     header = stringResource(id = R.string.history_transaction),
                     action = stringResource(id = R.string.send_nft)
-                ){
-
+                ) {
+                    eventHandler.postNavEvent(NavEvent.Action(NavTarget.SendNFT))
                 }
             }
 

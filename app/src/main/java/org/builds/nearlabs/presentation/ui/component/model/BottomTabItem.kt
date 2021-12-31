@@ -9,6 +9,6 @@ enum class BottomTabItem(
     val route: String
 ) {
     HOME(R.drawable.ic_home, NavTarget.Home.route),
-    NFT(R.drawable.ic_nft, NavTarget.NFT.route),
+    NFT(R.drawable.ic_nft, NavTarget.CreateNFT.route),
     TRANSACTION(R.drawable.ic_transaction, NavTarget.Transaction.route)
 }

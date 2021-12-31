@@ -87,7 +87,7 @@ fun AssetPreview(asset: Asset, onCloseClicked: () -> Unit) {
                     width = Dimension.fillToConstraints
                 }
                 .clickable { onCloseClicked() },
-            painter = painterResource(id = R.drawable.asset2),
+            painter = painterResource(id = asset.getImageResource()),
             contentDescription = "",
             contentScale = ContentScale.Crop
         )

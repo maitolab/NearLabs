@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
 import org.builds.nearlabs.R
 import org.builds.nearlabs.common.ResultWrapper
 import org.builds.nearlabs.domain.model.asset.Asset
@@ -36,8 +35,6 @@ import org.builds.nearlabs.presentation.ui.navigation.NavTarget
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.ui.theme.Gray4
-import org.builds.nearlabs.presentation.viewmodel.AssetViewModel
-import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
 import org.builds.nearlabs.presentation.viewmodel.initAssetViewModel
 import org.builds.nearlabs.presentation.viewmodel.initTransactionViewModel
 
@@ -69,7 +66,9 @@ fun ScreenHome() {
         }
 
         item {
-            Banner()
+            Banner {
+                eventHandler.postNavEvent(NavEvent.Action(NavTarget.CreateNFT))
+            }
         }
 
         if (popularAssets.value is ResultWrapper.Success) {
@@ -128,7 +127,7 @@ fun ScreenHome() {
 
 
 @Composable
-private fun Banner() {
+private fun Banner(onCreateNFT: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -169,7 +168,7 @@ private fun Banner() {
                         bottom.linkTo(parent.bottom, margin = 12.dp)
                     }
                     .background(Blue, RoundedCornerShape(10.dp)),
-                onClick = { }) {
+                onClick = { onCreateNFT() }) {
                 Text(
                     text = stringResource(id = R.string.create_nft),
                     color = Color.White

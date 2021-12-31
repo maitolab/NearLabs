@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import org.builds.nearlabs.R
 import org.builds.nearlabs.common.ResultWrapper
 import org.builds.nearlabs.domain.model.asset.Asset
@@ -19,7 +18,6 @@ import org.builds.nearlabs.presentation.ui.event.NavEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.navigation.NavTarget
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
-import org.builds.nearlabs.presentation.viewmodel.AssetViewModel
 import org.builds.nearlabs.presentation.viewmodel.initAssetViewModel
 
 @Composable
@@ -49,7 +47,7 @@ fun ScreenAssets() {
                     header = stringResource(id = R.string.my_nft),
                     action = stringResource(id = R.string.create_nft)
                 ) {
-
+                    eventHandler.postNavEvent(NavEvent.Action(NavTarget.CreateNFT))
                 }
             }
             item {
