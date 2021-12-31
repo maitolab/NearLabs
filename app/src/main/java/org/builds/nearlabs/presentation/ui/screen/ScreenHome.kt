@@ -17,6 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -104,7 +108,7 @@ fun ScreenHome() {
                 Header(
                     header = stringResource(id = R.string.recent_transaction),
                     action = stringResource(id = R.string.see_all)
-                ){
+                ) {
                     eventHandler.postNavEvent(NavEvent.Action(NavTarget.Transaction))
                 }
             }
@@ -156,7 +160,13 @@ private fun Banner(onCreateNFT: () -> Unit) {
                     bottom.linkTo(button.top)
                     width = Dimension.percent(0.5f)
                 },
-                text = stringResource(id = R.string.banner_slogan),
+                text = buildAnnotatedString {
+                    append("Start Creating your ")
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append("NFTs")
+                    }
+                    append(" Today")
+                },
                 fontSize = 26.sp
             )
 
