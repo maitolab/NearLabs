@@ -39,5 +39,5 @@
     <string name="verification">Verification</string>
     <string name="did_receive_your_code">Didn\'t receive your code?</string>
     <string name="resend_your_code">Resend your code</string>
-    <string name="send_to_a_different">Send to a different email address</string>
+    <string name="send_to_a_different">Send to a different %s</string>
 </resources>

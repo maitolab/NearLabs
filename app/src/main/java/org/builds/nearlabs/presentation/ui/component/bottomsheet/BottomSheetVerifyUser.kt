@@ -2,7 +2,6 @@ package org.builds.nearlabs.presentation.ui.component.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -10,14 +9,10 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusOrder
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,8 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import org.builds.nearlabs.R
+import org.builds.nearlabs.presentation.ui.component.OTPTextFields
 import org.builds.nearlabs.presentation.ui.component.model.AuthMode
 import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
+import org.builds.nearlabs.presentation.ui.event.SnackBarEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.ui.theme.Gray1
@@ -34,15 +31,24 @@ import org.builds.nearlabs.presentation.ui.theme.Gray1
 @Composable
 fun BottomSheetVerifyUser(event: BottomSheetEvent.VerifyUser) {
     val eventHandler = initEventHandler()
-    BottomSheetVerifyUser(event) {
-        eventHandler.postBottomSheetEvent(BottomSheetEvent.CreateNearAccount)
-    }
+    val resendMessage = stringResource(id = R.string.resend_your_code)
+    BottomSheetVerifyUser(event,
+        onContinue = {
+            eventHandler.postBottomSheetEvent(BottomSheetEvent.CreateNearAccount)
+        },
+        onSendDifferentUser = {
+            eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
+        }, onResend = {
+            eventHandler.postSnackBarEvent(SnackBarEvent.Info(resendMessage))
+        })
 }
 
 @Composable
 private fun BottomSheetVerifyUser(
     event: BottomSheetEvent.VerifyUser,
-    onContinue: () -> Unit
+    onContinue: () -> Unit,
+    onSendDifferentUser: () -> Unit,
+    onResend: () -> Unit,
 ) {
     Column(
         Modifier
@@ -87,7 +93,8 @@ private fun BottomSheetVerifyUser(
             modifier = Modifier.padding(top = 32.dp),
             textAlign = TextAlign.Center,
             text = buildAnnotatedString {
-                append("We've sent a 6-digit verification code to\nthe email address\n")
+                append("We've sent a 6-digit verification code to\n")
+                append(if (event.mode.isEmail()) "the email address\n" else "your phone\n")
                 withStyle(style = SpanStyle(color = Blue, fontSize = 18.sp)) {
                     append(event.input)
                 }
@@ -97,16 +104,23 @@ private fun BottomSheetVerifyUser(
             text = stringResource(id = R.string.enter_verification_code)
         )
 
+        var otpIsFilled by remember { mutableStateOf(false) }
+
+        val otpLength = 6
         OTPTextFields(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 24.dp),
-            length = 6
+            length = otpLength
         ) {
-
+            otpIsFilled = it.length == otpLength
         }
 
-        Button(modifier = Modifier.padding(top = 1.dp), onClick = onContinue) {
+        Button(
+            modifier = Modifier.padding(top = 1.dp),
+            onClick = onContinue,
+            enabled = otpIsFilled
+        ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string._continue))
                 Icon(Icons.Default.KeyboardArrowRight, "")
@@ -118,82 +132,24 @@ private fun BottomSheetVerifyUser(
         )
         TextButton(
             modifier = Modifier.padding(top = 16.dp),
-            onClick = { /*TODO*/ }) {
-            Text(text = stringResource(R.string.send_to_a_different))
+            onClick = onSendDifferentUser
+        ) {
+            Text(
+                text = stringResource(
+                    R.string.send_to_a_different,
+                    if (event.mode.isEmail()) "email address" else "phone number"
+                )
+            )
         }
-        TextButton(onClick = { /*TODO*/ }) {
+        TextButton(onClick = onResend) {
             Text(text = stringResource(R.string.resend_your_code))
         }
     }
 }
 
-@Composable
-fun OTPTextFields(
-    modifier: Modifier = Modifier,
-    length: Int,
-    onFilled: (code: String) -> Unit
-) {
-    val size = 50.dp
-    var code: List<Char> by remember { mutableStateOf(listOf()) }
-    val focusRequesters: List<FocusRequester> = remember {
-        val temp = mutableListOf<FocusRequester>()
-        repeat(length) {
-            temp.add(FocusRequester())
-        }
-        temp
-    }
-
-    Row(
-        modifier = modifier
-            .wrapContentHeight(), horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        (0 until length).forEach { index ->
-            OutlinedTextField(
-                modifier = Modifier
-                    .size(size)
-                    .focusOrder(focusRequester = focusRequesters[index]) {
-                        focusRequesters[index + 1].requestFocus()
-                    },
-                textStyle = MaterialTheme.typography.body2.copy(
-                    textAlign = TextAlign.Center, color = Color.Black
-                ),
-                singleLine = true,
-                value = code.getOrNull(index = index)?.takeIf {
-                    it.isDigit()
-                }?.toString() ?: "",
-                onValueChange = { value: String ->
-                    if (focusRequesters[index].freeFocus()) {
-                        val temp = code.toMutableList()
-                        if (value == "") {
-                            if (temp.size > index) {
-                                temp.removeAt(index = index)
-                                code = temp
-                                focusRequesters.getOrNull(index - 1)?.requestFocus()
-                            }
-                        } else {
-                            if (code.size > index) {
-                                temp[index] = value.getOrNull(0) ?: ' '
-                            } else {
-                                temp.add(value.getOrNull(0) ?: ' ')
-                                code = temp
-                                focusRequesters.getOrNull(index + 1)?.requestFocus() ?: onFilled(
-                                    code.joinToString(separator = "")
-                                )
-                            }
-                        }
-                    }
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                )
-            )
-        }
-    }
-}
 
 @Composable
 @Preview
 private fun BottomSheetVerifyUserPreview() {
-    BottomSheetVerifyUser(BottomSheetEvent.VerifyUser(AuthMode.Email, "test@gmail.com"))
+    BottomSheetVerifyUser(BottomSheetEvent.VerifyUser(AuthMode.Email, "test@gmail.com"), {}, {}, {})
 }

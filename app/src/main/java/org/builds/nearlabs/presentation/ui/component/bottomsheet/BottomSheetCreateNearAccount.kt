@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 @Composable
 fun BottomSheetCreateNearAccount() {
     Column(Modifier.fillMaxSize()) {
-        Text(text = "Near Account")
+        Text(text = "Enter an Account ID to use with your NEAR account. Your Account ID will be used for all NEAR operations, including sending and receiving assets.")
+
     }
 }
+
+

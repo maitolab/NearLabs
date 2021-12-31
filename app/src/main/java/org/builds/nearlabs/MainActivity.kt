@@ -1,6 +1,7 @@
 package org.builds.nearlabs
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -25,10 +27,12 @@ import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetGift
 import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetVerifyUser
 import org.builds.nearlabs.presentation.ui.component.model.BottomTabItem
 import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
+import org.builds.nearlabs.presentation.ui.event.SnackBarEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.navigation.AppGraph
 import org.builds.nearlabs.presentation.ui.theme.AppTheme
 import org.builds.nearlabs.presentation.ui.theme.Blue
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -72,7 +76,16 @@ private fun AppUI() {
                     })
             }
 
+            val scaffoldState = rememberScaffoldState()
+            val message = when (val event = eventHandler.snackBarEvent) {
+                is SnackBarEvent.None -> ""
+                is SnackBarEvent.Error -> event.error
+                is SnackBarEvent.Info -> event.message
+            }
 
+            if (message.isNotEmpty()) {
+                Toast.makeText(LocalContext.current, message, Toast.LENGTH_SHORT).show()
+            }
 
             ModalBottomSheetLayout(
                 sheetState = bottomState,
@@ -85,6 +98,7 @@ private fun AppUI() {
                     }
                 }) {
                 Scaffold(
+                    scaffoldState = scaffoldState,
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         AppBottomBar(navController, tabs)
