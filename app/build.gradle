@@ -40,4 +40,14 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation "androidx.compose.ui:ui:$composeVerion"
+    implementation "androidx.compose.material:material:$composeVerion"
+    implementation "androidx.compose.material:material-icons-extended:$composeVerion"
+    implementation "androidx.constraintlayout:constraintlayout-compose:$composeConstrainLayout"
+    implementation "androidx.compose.ui:ui-tooling-preview:$composeVerion"
+    implementation "androidx.compose.ui:ui-tooling:$composeVerion"
+
+    implementation "androidx.navigation:navigation-compose:$composeNavigation"
+    implementation "androidx.hilt:hilt-navigation-compose:$composeNavigationHilt"
 }
