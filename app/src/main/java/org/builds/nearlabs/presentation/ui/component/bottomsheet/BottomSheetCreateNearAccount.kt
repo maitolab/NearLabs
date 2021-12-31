@@ -23,21 +23,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.builds.nearlabs.R
 import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
-import org.builds.nearlabs.presentation.ui.event.NavEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
-import org.builds.nearlabs.presentation.ui.navigation.NavTarget
 import org.builds.nearlabs.presentation.ui.theme.Blue
 
 @Composable
 fun BottomSheetCreateNearAccount() {
     val eventHandler = initEventHandler()
-    BottomSheetCreateNearAccount({
-        eventHandler.postNavEvent(NavEvent.Action(NavTarget.Home))
-    }, {
-        eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
-    }, {
-        eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
-    })
+    BottomSheetCreateNearAccount(
+        onCreateAccount = {
+            eventHandler.postBottomSheetEvent(BottomSheetEvent.Gift)
+        }, onReadyHaveAccount = {
+            eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
+        }, onClose = {
+            eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
+        }
+    )
 }
 
 @Composable
@@ -96,7 +96,7 @@ fun BottomSheetCreateNearAccount(
             }
         }
         val tcAndPrivacy = buildAnnotatedString {
-            append("by clicking continue you must agree to near labs\n")
+            append("By creating a Near account, you agree to the NEAR Wallet\n")
             pushStringAnnotation(
                 tag = "TcUrl",
                 annotation = "https://en.wikipedia.org/wiki/Terms_of_service"
