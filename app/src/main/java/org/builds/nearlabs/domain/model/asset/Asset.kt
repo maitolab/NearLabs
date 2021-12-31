@@ -7,7 +7,12 @@ data class Asset(
      val id: Long,
      val name: String,
      val type: AssetType,
-     val image: String
+     val image: String,
+     val author: Author,
+     val description: String,
+     val info: AssetInfo
 ) {
+     fun identifier() = "#$id"
      fun getImageResource() = if (Random.nextBoolean()) R.drawable.asset1 else R.drawable.asset2
 }
+

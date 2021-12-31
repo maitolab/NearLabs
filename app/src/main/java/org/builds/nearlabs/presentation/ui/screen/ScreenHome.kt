@@ -38,13 +38,15 @@ import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.ui.theme.Gray4
 import org.builds.nearlabs.presentation.viewmodel.AssetViewModel
 import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
+import org.builds.nearlabs.presentation.viewmodel.initAssetViewModel
+import org.builds.nearlabs.presentation.viewmodel.initTransactionViewModel
 
 @Composable
 @Preview
 fun ScreenHome() {
     val eventHandler = initEventHandler()
-    val assetViewModel = hiltViewModel<AssetViewModel>()
-    val transactionViewModel = hiltViewModel<TransactionViewModel>()
+    val assetViewModel = initAssetViewModel()
+    val transactionViewModel = initTransactionViewModel()
 
     val popularAssets: MutableState<ResultWrapper<List<Asset>>> = remember {
         mutableStateOf(ResultWrapper.None)
@@ -88,7 +90,10 @@ fun ScreenHome() {
                                 .width(230.dp)
                                 .wrapContentHeight()
                         ) {
-                            AssetItem(it)
+                            AssetItem(it) { asset ->
+                                assetViewModel.setCurrentAsset(asset)
+                                eventHandler.postNavEvent(NavEvent.Action(NavTarget.AssetDetails))
+                            }
                         }
                     }
                 }

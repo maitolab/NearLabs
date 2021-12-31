@@ -3,6 +3,7 @@ package org.builds.nearlabs.presentation.ui.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -20,21 +21,23 @@ import androidx.constraintlayout.compose.Dimension
 import org.builds.nearlabs.domain.model.asset.Asset
 import org.builds.nearlabs.presentation.ui.theme.Gray1
 import org.builds.nearlabs.presentation.ui.theme.Gray2
+import org.builds.nearlabs.presentation.ui.theme.Gray4
 
 
 @Composable
-fun AssetItem(asset: Asset) {
+fun AssetItem(asset: Asset, onClicked: (Asset) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(0.5.dp, Gray2)
+        border = BorderStroke(0.5.dp, Gray4)
     ) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
+                .clickable { onClicked(asset) }
         ) {
             val (image, title, order, type) = createRefs()
             Image(
@@ -71,7 +74,7 @@ fun AssetItem(asset: Asset) {
                     bottom.linkTo(parent.bottom, margin = 12.dp)
                     width = Dimension.fillToConstraints
                 },
-                text = "#${asset.id}",
+                text = asset.identifier(),
                 color = Gray1
             )
 

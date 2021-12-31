@@ -22,10 +22,11 @@ import org.builds.nearlabs.presentation.ui.component.TransactionItem
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
+import org.builds.nearlabs.presentation.viewmodel.initTransactionViewModel
 
 @Composable
 fun ScreenTransactions() {
-    val transactionViewModel = hiltViewModel<TransactionViewModel>()
+    val transactionViewModel = initTransactionViewModel()
 
     val transactions: MutableState<ResultWrapper<List<Transaction>>> = remember {
         mutableStateOf(ResultWrapper.None)
@@ -108,9 +109,11 @@ private fun TransactionTab(tabIndex: Int, onTabSelected: (Int) -> Unit) {
         ).forEachIndexed { index, title ->
             val tabSelected = index == tabIndex
             Tab(
-                modifier = Modifier.wrapContentWidth().background(
-                    if (tabSelected) Blue else Color.Transparent
-                ),
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .background(
+                        if (tabSelected) Blue else Color.Transparent
+                    ),
                 selected = tabSelected,
                 onClick = { onTabSelected(index) },
                 text = {

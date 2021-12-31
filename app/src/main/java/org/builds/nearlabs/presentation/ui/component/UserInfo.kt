@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.builds.nearlabs.R
 import org.builds.nearlabs.presentation.ui.theme.Gray2
+import org.builds.nearlabs.presentation.ui.theme.Gray4
 
 @Composable
 fun UserInfo() {
@@ -28,7 +29,7 @@ fun UserInfo() {
         Row(
             modifier = Modifier
                 .wrapContentSize()
-                .border(1.dp, Gray2, RoundedCornerShape(20.dp))
+                .border(1.dp, Gray4, RoundedCornerShape(20.dp))
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
 

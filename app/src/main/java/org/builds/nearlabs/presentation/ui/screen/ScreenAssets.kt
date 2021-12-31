@@ -15,12 +15,17 @@ import org.builds.nearlabs.common.ResultWrapper
 import org.builds.nearlabs.domain.model.asset.Asset
 import org.builds.nearlabs.presentation.ui.component.Header
 import org.builds.nearlabs.presentation.ui.component.AssetItem
+import org.builds.nearlabs.presentation.ui.event.NavEvent
+import org.builds.nearlabs.presentation.ui.event.initEventHandler
+import org.builds.nearlabs.presentation.ui.navigation.NavTarget
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
 import org.builds.nearlabs.presentation.viewmodel.AssetViewModel
+import org.builds.nearlabs.presentation.viewmodel.initAssetViewModel
 
 @Composable
 fun ScreenAssets() {
-    val assetViewModel = hiltViewModel<AssetViewModel>()
+    val eventHandler = initEventHandler()
+    val assetViewModel = initAssetViewModel()
 
     val assets: MutableState<ResultWrapper<List<Asset>>> = remember {
         mutableStateOf(ResultWrapper.None)
@@ -43,14 +48,19 @@ fun ScreenAssets() {
                 Header(
                     header = stringResource(id = R.string.my_nft),
                     action = stringResource(id = R.string.create_nft)
-                ){
+                ) {
 
                 }
             }
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    assets.value.takeValueOrThrow().forEach {
-                        AssetItem(asset = it)
+                    assets.value.takeValueOrThrow().forEach { asset ->
+                        AssetItem(asset = asset) {
+                            assetViewModel.setCurrentAsset(asset)
+                            eventHandler.postNavEvent(
+                                NavEvent.Action(NavTarget.AssetDetails)
+                            )
+                        }
                     }
                 }
             }

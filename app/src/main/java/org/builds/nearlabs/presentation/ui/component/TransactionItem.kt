@@ -27,6 +27,7 @@ import org.builds.nearlabs.domain.model.transaction.Transaction
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.ui.theme.Gray1
 import org.builds.nearlabs.presentation.ui.theme.Gray2
+import org.builds.nearlabs.presentation.ui.theme.Gray4
 
 
 @Composable
@@ -45,7 +46,7 @@ fun TransactionItem(transaction: Transaction) {
                     bottom.linkTo(parent.bottom)
                 }
                 .size(50.dp)
-                .border(1.dp, Gray2, CircleShape)
+                .border(1.dp, Gray4, CircleShape)
                 .padding(16.dp),
             imageVector = ImageVector.vectorResource(id = if (transaction.isIncoming()) R.drawable.ic_receive else R.drawable.ic_sent),
             contentDescription = "icon"

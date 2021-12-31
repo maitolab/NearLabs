@@ -10,6 +10,8 @@ import org.builds.nearlabs.presentation.ui.screen.ScreenAssets
 import org.builds.nearlabs.presentation.ui.screen.ScreenAuthentication
 import org.builds.nearlabs.presentation.ui.screen.ScreenHome
 import org.builds.nearlabs.presentation.ui.screen.ScreenTransactions
+import androidx.navigation.compose.rememberNavController
+import org.builds.nearlabs.presentation.ui.screen.*
 
 @Composable
 fun AppGraph(navController: NavHostController) {
@@ -28,6 +30,9 @@ fun AppGraph(navController: NavHostController) {
         }
         composable(NavTarget.Transaction.route) {
             ScreenTransactions()
+        }
+        composable(NavTarget.AssetDetails.route) {
+            ScreenAssetDetails()
         }
     }
 }
