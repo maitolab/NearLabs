@@ -7,24 +7,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
+import com.google.accompanist.insets.ProvideWindowInsets
 import org.builds.nearlabs.presentation.ui.navigation.AppGraph
 import org.builds.nearlabs.presentation.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent{
-            AppTheme{
-                AppUI()
-            }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        setContent {
+            AppUI()
         }
     }
 }
 
 @Composable
-private fun AppUI(){
-    Scaffold(
-        modifier = Modifier.fillMaxSize()) {
-        AppGraph()
+private fun AppUI() {
+    ProvideWindowInsets{
+        AppTheme{
+            Scaffold(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                AppGraph()
+            }
+        }
     }
 }

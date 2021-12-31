@@ -8,6 +8,8 @@ buildscript {
         composeNavigation = '2.4.0-alpha03'
         composeNavigationHilt = '1.0.0-rc01'
         hiltVersion = '2.39.1'
+        coilVersion= '1.4.0'
+        accompanistInsetsVersion= '0.22.0-rc'
     }
 
     repositories {
