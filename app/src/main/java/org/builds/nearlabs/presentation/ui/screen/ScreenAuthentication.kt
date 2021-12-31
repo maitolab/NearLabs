@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -30,6 +31,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import org.builds.nearlabs.R
 import org.builds.nearlabs.presentation.ui.component.model.AuthMode
+import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
 import org.builds.nearlabs.presentation.ui.event.NavEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.navigation.NavTarget
@@ -39,10 +41,13 @@ import org.builds.nearlabs.presentation.ui.theme.Yellow
 @Composable
 fun ScreenAuthentication() {
     val eventHandler = initEventHandler()
+    val localFocus = LocalFocusManager.current
     ScreenAuthentication(
-        onGetStarted = {
-            eventHandler.postNavEvent(NavEvent.Action(NavTarget.Home))
+        onGetStarted = { mode, text ->
+            localFocus.clearFocus(true)
+            eventHandler.postBottomSheetEvent(BottomSheetEvent.VerifyUser(mode, text))
         }, onLogin = {
+            localFocus.clearFocus(true)
             eventHandler.postNavEvent(NavEvent.Action(NavTarget.Home))
         }
     )
@@ -50,7 +55,7 @@ fun ScreenAuthentication() {
 
 @Composable
 private fun ScreenAuthentication(
-    onGetStarted: () -> Unit,
+    onGetStarted: (AuthMode, String) -> Unit,
     onLogin: () -> Unit
 ) {
     ConstraintLayout(Modifier.fillMaxSize()) {
@@ -102,7 +107,7 @@ private fun ScreenAuthentication(
 
 
 @Composable
-private fun EmailAndPhone(onGetStarted: () -> Unit) {
+private fun EmailAndPhone(onGetStarted: (AuthMode, String) -> Unit) {
     var mode by remember { mutableStateOf(AuthMode.Email) }
     var input by remember { mutableStateOf("") }
 
@@ -147,7 +152,9 @@ private fun EmailAndPhone(onGetStarted: () -> Unit) {
 
     Button(
         modifier = Modifier.padding(top = 16.dp),
-        onClick = onGetStarted,
+        onClick = {
+            onGetStarted.invoke(mode, input)
+        },
         enabled = if (mode.isEmail()) Patterns.EMAIL_ADDRESS.matcher(input)
             .matches() else input.isNotEmpty()
     ) {
@@ -239,5 +246,5 @@ private fun NearAccount(onLogin: () -> Unit) {
 @Composable
 @Preview
 private fun ScreenAuthenticationPreview() {
-    ScreenAuthentication({}, {})
+    ScreenAuthentication({ _, _ -> }, {})
 }

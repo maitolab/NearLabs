@@ -22,6 +22,6 @@ fun NavHostController.handleNavEvent(navEvent: NavEvent) {
         is NavEvent.NavigateUp -> {
             navigateUp()
         }
-        else -> Log.i("Error", "No need to handle $navEvent")
+        else -> Log.i("NearLabs", "No need to handle $navEvent")
     }
 }

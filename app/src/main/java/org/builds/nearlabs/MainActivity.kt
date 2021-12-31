@@ -4,13 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -23,7 +18,12 @@ import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.navigationBarsPadding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetEmpty
+import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetVerifyUser
 import org.builds.nearlabs.presentation.ui.component.model.BottomTabItem
+import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
+import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.navigation.AppGraph
 import org.builds.nearlabs.presentation.ui.theme.AppTheme
 import org.builds.nearlabs.presentation.ui.theme.Blue
@@ -40,6 +40,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun AppUI() {
     ProvideWindowInsets {
@@ -47,13 +49,41 @@ private fun AppUI() {
             val tabs = remember { BottomTabItem.values() }
             val navController = rememberNavController()
 
-            Scaffold(
-                modifier = Modifier.fillMaxSize(),
-                bottomBar = {
-                    AppBottomBar(navController, tabs)
+            val eventHandler = initEventHandler()
+            val bottomState =
+                rememberModalBottomSheetState(ModalBottomSheetValue.Hidden, confirmStateChange = {
+                    if (it == ModalBottomSheetValue.Hidden) {
+                        eventHandler.postBottomSheetEvent(BottomSheetEvent.None)
+                    }
+                    true
+                })
+            when (eventHandler.bottomSheetEvent) {
+                is BottomSheetEvent.None -> LaunchedEffect(key1 = "hide", block = {
+                    bottomState.hide()
+                })
+                is BottomSheetEvent.VerifyUser -> LaunchedEffect(key1 = "show", block = {
+                    bottomState.animateTo(ModalBottomSheetValue.Expanded)
+                })
+            }
+
+
+
+            ModalBottomSheetLayout(
+                sheetState = bottomState,
+                sheetContent = {
+                    when (val event = eventHandler.bottomSheetEvent) {
+                        is BottomSheetEvent.None -> BottomSheetEmpty()
+                        is BottomSheetEvent.VerifyUser -> BottomSheetVerifyUser(event)
+                    }
+                }) {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        AppBottomBar(navController, tabs)
+                    }
+                ) {
+                    AppGraph(navController)
                 }
-            ) {
-                AppGraph(navController)
             }
         }
     }
