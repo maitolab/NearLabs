@@ -100,7 +100,7 @@ fun TransactionItem(transaction: Transaction) {
                 top.linkTo(order.top)
                 bottom.linkTo(order.bottom)
             },
-            text = "3 days ago",
+            text = transaction.getPrettyTime(),
             color = Gray1
         )
     }

@@ -57,8 +57,16 @@ object DataPool {
                     address = "0xa6f79B60359f141df90A0C745125B131cAAfFD12".lowercase()
                 ),
                 direction = if (Random.nextBoolean()) TransactionDirection.Incoming else TransactionDirection.Outgoing,
-                timestamp = LocalDateTime.now().minusDays(3)
+                timestamp = when (it % 4) {
+                    0L -> LocalDateTime.now().minusDays(5)
+                    1L -> LocalDateTime.now().minusMinutes(15)
+                    2L -> LocalDateTime.now().minusDays(6)
+                    3L -> LocalDateTime.now().minusWeeks(2)
+                    else -> LocalDateTime.now().minusMonths(3)
+                }
             )
+        }.sortedByDescending {
+            it.timestamp
         }
     }
 }
