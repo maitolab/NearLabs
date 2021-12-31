@@ -27,11 +27,23 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import org.builds.nearlabs.R
 import org.builds.nearlabs.presentation.ui.component.model.AuthMode
 import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
+import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.ui.theme.Gray1
 
 @Composable
 fun BottomSheetVerifyUser(event: BottomSheetEvent.VerifyUser) {
+    val eventHandler = initEventHandler()
+    BottomSheetVerifyUser(event) {
+        eventHandler.postBottomSheetEvent(BottomSheetEvent.CreateNearAccount)
+    }
+}
+
+@Composable
+private fun BottomSheetVerifyUser(
+    event: BottomSheetEvent.VerifyUser,
+    onContinue: () -> Unit
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -53,12 +65,14 @@ fun BottomSheetVerifyUser(event: BottomSheetEvent.VerifyUser) {
                 textAlign = TextAlign.Center,
                 fontSize = 22.sp
             )
-            IconButton(modifier = Modifier.constrainAs(button) {
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-            },
-                onClick = { /*TODO*/ }) {
+            IconButton(
+                modifier = Modifier.constrainAs(button) {
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                },
+                onClick = onContinue
+            ) {
                 Icon(Icons.Default.Close, contentDescription = null, tint = Gray1)
             }
         }
@@ -92,7 +106,7 @@ fun BottomSheetVerifyUser(event: BottomSheetEvent.VerifyUser) {
 
         }
 
-        Button(modifier = Modifier.padding(top = 1.dp), onClick = { /*TODO*/ }) {
+        Button(modifier = Modifier.padding(top = 1.dp), onClick = onContinue) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string._continue))
                 Icon(Icons.Default.KeyboardArrowRight, "")

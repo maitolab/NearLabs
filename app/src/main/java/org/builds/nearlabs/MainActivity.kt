@@ -19,7 +19,9 @@ import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.navigationBarsPadding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetCreateNearAccount
 import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetEmpty
+import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetGift
 import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetVerifyUser
 import org.builds.nearlabs.presentation.ui.component.model.BottomTabItem
 import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
@@ -61,9 +63,13 @@ private fun AppUI() {
                 is BottomSheetEvent.None -> LaunchedEffect(key1 = "hide", block = {
                     bottomState.hide()
                 })
-                is BottomSheetEvent.VerifyUser -> LaunchedEffect(key1 = "show", block = {
-                    bottomState.animateTo(ModalBottomSheetValue.Expanded)
-                })
+                is BottomSheetEvent.VerifyUser,
+                BottomSheetEvent.CreateNearAccount,
+                BottomSheetEvent.Gift -> LaunchedEffect(
+                    key1 = "show",
+                    block = {
+                        bottomState.animateTo(ModalBottomSheetValue.Expanded)
+                    })
             }
 
 
@@ -74,6 +80,8 @@ private fun AppUI() {
                     when (val event = eventHandler.bottomSheetEvent) {
                         is BottomSheetEvent.None -> BottomSheetEmpty()
                         is BottomSheetEvent.VerifyUser -> BottomSheetVerifyUser(event)
+                        is BottomSheetEvent.CreateNearAccount -> BottomSheetCreateNearAccount()
+                        is BottomSheetEvent.Gift -> BottomSheetGift()
                     }
                 }) {
                 Scaffold(
