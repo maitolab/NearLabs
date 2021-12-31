@@ -4,10 +4,17 @@
     <string name="my_nft">My NFTs</string>
     <string name="see_all">See All</string>
     <string name="recent_transaction">Recent Transactions</string>
+    <string name="history_transaction">History Transactions</string>
     <string name="create_nft">Create an NFT</string>
+    <string name="send_nft">Send NFT</string>
     <string name="sent_to">Sent to</string>
     <string name="receive_from">Receive from</string>
     <string name="banner_slogan">Start Creating your NFTs Today</string>
+
+    <string name="transaction_all">All</string>
+    <string name="transaction_sent">Sent</string>
+    <string name="transaction_received">Received</string>
+
     <string name="logo">Logo</string>
     <string name="onboard">onBoard</string>
 </resources>
