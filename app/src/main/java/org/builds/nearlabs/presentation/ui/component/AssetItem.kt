@@ -1,4 +1,4 @@
-package org.builds.nearlabs.presentation.ui.screen.components
+package org.builds.nearlabs.presentation.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

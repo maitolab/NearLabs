@@ -1,4 +1,4 @@
-package org.builds.nearlabs.presentation.ui.component
+package org.builds.nearlabs.presentation.ui.component.model
 
 import androidx.annotation.DrawableRes
 import org.builds.nearlabs.R

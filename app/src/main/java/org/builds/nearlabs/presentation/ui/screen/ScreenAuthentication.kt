@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import org.builds.nearlabs.R
-import org.builds.nearlabs.presentation.ui.component.AuthMode
+import org.builds.nearlabs.presentation.ui.component.model.AuthMode
 import org.builds.nearlabs.presentation.ui.event.NavEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.navigation.NavTarget

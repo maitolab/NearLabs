@@ -18,7 +18,7 @@ import org.builds.nearlabs.R
 import org.builds.nearlabs.common.ResultWrapper
 import org.builds.nearlabs.domain.model.transaction.Transaction
 import org.builds.nearlabs.presentation.ui.component.Header
-import org.builds.nearlabs.presentation.ui.screen.components.TransactionItem
+import org.builds.nearlabs.presentation.ui.component.TransactionItem
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
@@ -50,7 +50,9 @@ fun ScreenTransactions() {
                 Header(
                     header = stringResource(id = R.string.history_transaction),
                     action = stringResource(id = R.string.send_nft)
-                )
+                ){
+
+                }
             }
 
             item {

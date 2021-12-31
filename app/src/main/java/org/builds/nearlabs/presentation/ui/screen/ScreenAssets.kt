@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,8 +14,7 @@ import org.builds.nearlabs.R
 import org.builds.nearlabs.common.ResultWrapper
 import org.builds.nearlabs.domain.model.asset.Asset
 import org.builds.nearlabs.presentation.ui.component.Header
-import org.builds.nearlabs.presentation.ui.screen.components.AssetItem
-import org.builds.nearlabs.presentation.ui.screen.components.TransactionItem
+import org.builds.nearlabs.presentation.ui.component.AssetItem
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
 import org.builds.nearlabs.presentation.viewmodel.AssetViewModel
 
@@ -46,7 +43,9 @@ fun ScreenAssets() {
                 Header(
                     header = stringResource(id = R.string.my_nft),
                     action = stringResource(id = R.string.create_nft)
-                )
+                ){
+
+                }
             }
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {

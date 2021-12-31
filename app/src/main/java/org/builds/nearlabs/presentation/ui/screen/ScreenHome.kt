@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,11 +28,13 @@ import org.builds.nearlabs.common.ResultWrapper
 import org.builds.nearlabs.domain.model.asset.Asset
 import org.builds.nearlabs.domain.model.transaction.Transaction
 import org.builds.nearlabs.presentation.ui.component.Header
-import org.builds.nearlabs.presentation.ui.screen.components.AssetItem
-import org.builds.nearlabs.presentation.ui.screen.components.TransactionItem
+import org.builds.nearlabs.presentation.ui.component.AssetItem
+import org.builds.nearlabs.presentation.ui.component.TransactionItem
+import org.builds.nearlabs.presentation.ui.event.NavEvent
+import org.builds.nearlabs.presentation.ui.event.initEventHandler
+import org.builds.nearlabs.presentation.ui.navigation.NavTarget
 import org.builds.nearlabs.presentation.ui.screen.components.UserInfo
 import org.builds.nearlabs.presentation.ui.theme.Blue
-import org.builds.nearlabs.presentation.ui.theme.Gray1
 import org.builds.nearlabs.presentation.ui.theme.Gray4
 import org.builds.nearlabs.presentation.viewmodel.AssetViewModel
 import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
@@ -41,6 +42,7 @@ import org.builds.nearlabs.presentation.viewmodel.TransactionViewModel
 @Composable
 @Preview
 fun ScreenHome() {
+    val eventHandler = initEventHandler()
     val assetViewModel = hiltViewModel<AssetViewModel>()
     val transactionViewModel = hiltViewModel<TransactionViewModel>()
 
@@ -73,7 +75,9 @@ fun ScreenHome() {
                 Header(
                     header = stringResource(id = R.string.my_nft),
                     action = stringResource(id = R.string.see_all)
-                )
+                ) {
+                    eventHandler.postNavEvent(NavEvent.Action(NavTarget.Assets))
+                }
             }
 
             item {
@@ -96,7 +100,9 @@ fun ScreenHome() {
                 Header(
                     header = stringResource(id = R.string.recent_transaction),
                     action = stringResource(id = R.string.see_all)
-                )
+                ){
+                    eventHandler.postNavEvent(NavEvent.Action(NavTarget.Transaction))
+                }
             }
 
             item {
