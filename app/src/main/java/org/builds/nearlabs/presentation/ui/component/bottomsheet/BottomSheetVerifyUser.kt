@@ -27,6 +27,7 @@ import org.builds.nearlabs.presentation.ui.event.SnackBarEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import org.builds.nearlabs.presentation.ui.theme.Gray1
+import kotlin.math.max
 
 @Composable
 fun BottomSheetVerifyUser(event: BottomSheetEvent.VerifyUser) {

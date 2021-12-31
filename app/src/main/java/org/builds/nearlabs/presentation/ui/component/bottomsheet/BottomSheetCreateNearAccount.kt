@@ -16,15 +16,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.builds.nearlabs.R
 import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.theme.Blue
+import org.builds.nearlabs.presentation.ui.theme.Gray1
+import org.builds.nearlabs.presentation.ui.theme.Gray2
 
 @Composable
 fun BottomSheetCreateNearAccount() {
@@ -46,11 +50,15 @@ fun BottomSheetCreateNearAccount(
     onReadyHaveAccount: () -> Unit,
     onClose: () -> Unit
 ) {
+    var name by remember { mutableStateOf(TextFieldValue()) }
+    var account by remember { mutableStateOf(TextFieldValue()) }
+
     Column(
         Modifier
             .fillMaxSize()
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         BottomSheetHeader(title = stringResource(id = R.string.create_near_accoutn)) {
             onClose.invoke()
@@ -64,26 +72,36 @@ fun BottomSheetCreateNearAccount(
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.create_account_instruction)
+            text = stringResource(R.string.create_account_instruction),
+            color = Gray1
         )
-        var name by remember { mutableStateOf(TextFieldValue()) }
-        var account by remember { mutableStateOf(TextFieldValue()) }
+
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.full_name)
+            text = stringResource(R.string.full_name).uppercase(),
+            color = Gray1,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Normal
         )
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = name,
             onValueChange = { name = it })
+
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.account_id)
+            text = stringResource(R.string.account_id).uppercase(),
+            color = Gray1,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Normal
         )
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = account,
             onValueChange = { account = it })
+
         Button(
             onClick = onCreateAccount, colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Black,
@@ -95,6 +113,7 @@ fun BottomSheetCreateNearAccount(
                 Icon(Icons.Default.KeyboardArrowRight, "")
             }
         }
+
         val tcAndPrivacy = buildAnnotatedString {
             append("By creating a Near account, you agree to the NEAR Wallet\n")
             pushStringAnnotation(
@@ -140,7 +159,11 @@ fun BottomSheetCreateNearAccount(
             }
         )
 
-        Text(text = stringResource(id = R.string.already_have_near_account_))
+        Text(
+            modifier = Modifier.padding(top = 24.dp),
+            text = stringResource(id = R.string.already_have_near_account_)
+        )
+
         Button(onClick = onReadyHaveAccount) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string.login_with_near))
