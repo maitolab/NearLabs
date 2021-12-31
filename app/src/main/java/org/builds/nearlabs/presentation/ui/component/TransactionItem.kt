@@ -60,7 +60,7 @@ fun TransactionItem(transaction: Transaction) {
                 bottom.linkTo(desc.top)
                 width = Dimension.fillToConstraints
             },
-            text = "#${transaction.id}",
+            text = transaction.identifier(),
             color = Blue,
             fontWeight = FontWeight.Bold
         )
@@ -78,7 +78,7 @@ fun TransactionItem(transaction: Transaction) {
                     append(stringResource(id = R.string.receive_from))
                     append(" ")
                     withStyle(SpanStyle(Blue)) {
-                        append(transaction.sender.address)
+                        append(transaction.sender.getShortenAddress())
                     }
                 }
                 else -> buildAnnotatedString {

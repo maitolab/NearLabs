@@ -10,5 +10,6 @@ data class Transaction(
     val direction: TransactionDirection,
     val timestamp: LocalDateTime
 ) {
+    fun identifier() = "#$id"
     fun isIncoming() = direction == TransactionDirection.Incoming
 }

@@ -84,7 +84,9 @@ fun AssetPreview(asset: Asset, onCloseClicked: () -> Unit) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
                     width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
                 }
                 .clickable { onCloseClicked() },
             painter = painterResource(id = asset.getImageResource()),
@@ -137,7 +139,7 @@ fun AssetMetaInfo(asset: Asset) {
             modifier = Modifier.constrainAs(name) {
                 start.linkTo(parent.start, margin = 16.dp)
                 end.linkTo(parent.end, margin = 16.dp)
-                top.linkTo(parent.top, margin = 16.dp)
+                top.linkTo(parent.top, margin = 12.dp)
                 width = Dimension.fillToConstraints
             },
             text = asset.name,
@@ -257,7 +259,7 @@ fun AssetContract(asset: Asset) {
 
         AssetInfoItem(
             name = stringResource(id = R.string.contract_address),
-            value = asset.info.contract
+            value = asset.info.getShortenContract()
         )
     }
 }
