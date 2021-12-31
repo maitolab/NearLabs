@@ -21,6 +21,10 @@
     <string name="creator">Creator</string>
     <string name="token_id">Token ID</string>
     <string name="contract_address">Contract Address</string>
+    <string name="send_gift">Send Gift</string>
+    <string name="share_app">Share App</string>
+    <string name="gift_an_nft">Gift an NFT</string>
+    <string name="import_contact">Import</string>
 
     <string name="logo">Logo</string>
     <string name="onboard">onBoard</string>

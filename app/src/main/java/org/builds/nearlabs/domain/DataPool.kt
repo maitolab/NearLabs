@@ -1,5 +1,6 @@
 package org.builds.nearlabs.domain
 
+import org.builds.nearlabs.domain.model.Contact
 import org.builds.nearlabs.domain.model.asset.*
 import org.builds.nearlabs.domain.model.transaction.Transaction
 import org.builds.nearlabs.domain.model.transaction.TransactionAddress
@@ -7,6 +8,11 @@ import org.builds.nearlabs.domain.model.transaction.TransactionDirection
 import org.threeten.bp.LocalDateTime
 import kotlin.random.Random
 
+
+/**
+ * This is the dummy data generator for testing purpose.
+ * It will be removed once integrated with API from backend.
+ */
 object DataPool {
 
     private fun assetNames() = listOf(
@@ -15,6 +21,29 @@ object DataPool {
         "Domains.Kred",
         "Decentraland Names"
     )
+
+    private fun contactNames() = listOf(
+        "Darlene Robertson",
+        "Jacob Jones",
+        "Jenny Wilson",
+        "Ronald Richards",
+        "Cameron Williamson",
+        "Darrell Steward",
+        "Wade Warren",
+        "Courtney Henry"
+    )
+
+    fun contacts(): List<Contact> {
+        val names = contactNames()
+        return (0..100).map {
+            Contact(
+                id = it,
+                name = names[it % names.size],
+                nick = "@johndoe",
+                image = ""
+            )
+        }
+    }
 
     fun assets(): List<Asset> {
         val names = assetNames()

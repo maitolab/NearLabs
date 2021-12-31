@@ -27,9 +27,11 @@ import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetGift
 import org.builds.nearlabs.presentation.ui.component.bottomsheet.BottomSheetVerifyUser
 import org.builds.nearlabs.presentation.ui.component.model.BottomTabItem
 import org.builds.nearlabs.presentation.ui.event.BottomSheetEvent
+import org.builds.nearlabs.presentation.ui.event.NavEvent
 import org.builds.nearlabs.presentation.ui.event.SnackBarEvent
 import org.builds.nearlabs.presentation.ui.event.initEventHandler
 import org.builds.nearlabs.presentation.ui.navigation.AppGraph
+import org.builds.nearlabs.presentation.ui.navigation.NavTarget
 import org.builds.nearlabs.presentation.ui.theme.AppTheme
 import org.builds.nearlabs.presentation.ui.theme.Blue
 import java.util.*
@@ -39,7 +41,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
             AppUI()
         }
@@ -64,9 +65,11 @@ private fun AppUI() {
                     true
                 })
             when (eventHandler.bottomSheetEvent) {
-                is BottomSheetEvent.None -> LaunchedEffect(key1 = "hide", block = {
-                    bottomState.hide()
-                })
+                is BottomSheetEvent.None -> LaunchedEffect(
+                    key1 = "hide",
+                    block = {
+                        bottomState.hide()
+                    })
                 is BottomSheetEvent.VerifyUser,
                 BottomSheetEvent.CreateNearAccount,
                 BottomSheetEvent.Gift -> LaunchedEffect(
@@ -94,7 +97,12 @@ private fun AppUI() {
                         is BottomSheetEvent.None -> BottomSheetEmpty()
                         is BottomSheetEvent.VerifyUser -> BottomSheetVerifyUser(event)
                         is BottomSheetEvent.CreateNearAccount -> BottomSheetCreateNearAccount()
-                        is BottomSheetEvent.Gift -> BottomSheetGift()
+                        is BottomSheetEvent.Gift -> BottomSheetGift {
+                            eventHandler.run {
+                                postBottomSheetEvent(BottomSheetEvent.None)
+                                postNavEvent(NavEvent.Action(NavTarget.Home))
+                            }
+                        }
                     }
                 }) {
                 Scaffold(
@@ -105,6 +113,7 @@ private fun AppUI() {
                     }
                 ) {
                     AppGraph(navController)
+
                 }
             }
         }
